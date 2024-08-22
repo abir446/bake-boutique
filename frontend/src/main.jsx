@@ -7,14 +7,14 @@ import { Navbar } from "./components/Navbar.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Toaster } from "react-hot-toast";
+import { UserContextProvider } from "../context/userContext.jsx";
 
 // Layout component
 const Layout = () => (
-  <>
+  <UserContextProvider>
     <Navbar />
     <Outlet />{" "}
-    {/* This is where the matched route's element will be rendered */}
-  </>
+  </UserContextProvider>
 );
 
 const router = createBrowserRouter([

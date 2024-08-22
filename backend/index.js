@@ -5,12 +5,34 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const { hashPassword, comparePasswords } = require("./helper/auth.js");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  return res.status(200).json("Test Success");
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  console.log("Token:", token); // Log the token
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
+      if (err) {
+        console.error("JWT Verification Error:", err); // Log the error
+        return res.json(null);
+      }
+      console.log("User:", user); // Log the user
+      res.json(user);
+    });
+  } else {
+    res.json(null);
+  }
 });
 
 app.post("/login", async (req, res) => {
@@ -28,7 +50,25 @@ app.post("/login", async (req, res) => {
     const match = await comparePasswords(password, user.password);
 
     if (match) {
-      return res.json("success");
+      jwt.sign(
+        { email: user.email, id: user._id, name: user.name },
+        process.env.JWT_SECRET,
+        {},
+        (err, token) => {
+          if (err) {
+            throw err;
+          }
+          res
+            .cookie("token", token, {
+              httpOnly: true, // Only send cookie over HTTPS in production
+              secure: true,
+              sameSite: "none", // Adjust as needed: 'lax', 'strict', or 'none'
+              path: "/",
+            })
+            .status(200)
+            .json({ message: "Login successful", user });
+        }
+      );
     } else {
       return res.json({ error: "Password is incorrect" });
     }

@@ -15,10 +15,14 @@ export const LoginForm = () => {
     e.preventDefault();
     const { email, password } = data;
     try {
-      const { data } = await axios.post("http://localhost:8000/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        "http://localhost:8000/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (data.error) {
         toast.error(data.error);
       } else {
