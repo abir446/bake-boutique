@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
+const { hashPassword, comparePasswords } = require("./helper/auth.js");
 
 app.use(cors());
 app.use(express.json());
@@ -12,13 +13,31 @@ app.get("/", (req, res) => {
   return res.status(200).json("Test Success");
 });
 
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.json({ error: "Please provide email and password" });
+    }
 
-  //   console.log(email, password);
-  res.status(201).json({ email, password });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.json({ error: "No such user found!" });
+    }
+
+    const match = await comparePasswords(password, user.password);
+
+    if (match) {
+      return res.json("success");
+    } else {
+      return res.json({ error: "Password is incorrect" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 });
 
+//Registration Post
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -43,7 +62,9 @@ app.post("/register", async (req, res) => {
       });
     }
 
-    const userCreated = await User.create({ name, email, password });
+    const hashed = await hashPassword(password);
+
+    const userCreated = await User.create({ name, email, password: hashed });
     res.status(201).json(userCreated);
   } catch (error) {
     console.log(error);

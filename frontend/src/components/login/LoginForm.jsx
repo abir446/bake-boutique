@@ -1,27 +1,34 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const loginUser = (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
-    console.log(data);
-    axios
-      .post("http://localhost:8000/login", data)
-      .then((response) => {
-        console.log(response.data);
-        setData({
-          email: "",
-          password: "",
-        });
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
+    const { email, password } = data;
+    try {
+      const { data } = await axios.post("http://localhost:8000/login", {
+        email,
+        password,
       });
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        setData({});
+        toast.success("Login successful");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
