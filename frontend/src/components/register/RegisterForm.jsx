@@ -10,6 +10,7 @@ export const RegisterForm = () => {
     name: "",
     email: "",
     password: "",
+    address: "",
   });
 
   const registerUser = async (e) => {
@@ -33,7 +34,6 @@ export const RegisterForm = () => {
       console.log(error);
     }
   };
-
   return (
     <form onSubmit={registerUser}>
       <label htmlFor="">Name</label>
@@ -54,6 +54,17 @@ export const RegisterForm = () => {
         placeholder="john@doe.com"
         autoComplete="email"
       />
+      <label htmlFor="">Address</label>
+      <input
+        type="text"
+        value={data.address}
+        onChange={(e) => setData({ ...data, address: e.target.value })}
+        name=""
+        id="email"
+        placeholder="Address"
+        autoComplete="address"
+      />
+
       <label htmlFor="">Password</label>
       <input
         type="password"
