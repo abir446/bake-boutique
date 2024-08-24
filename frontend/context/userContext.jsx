@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext({});
 
+// eslint-disable-next-line react/prop-types
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
@@ -14,7 +15,7 @@ export function UserContextProvider({ children }) {
           setUser(data);
         });
     }
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

@@ -27,7 +27,7 @@ app.get("/profile", (req, res) => {
         console.error("JWT Verification Error:", err); // Log the error
         return res.json(null);
       }
-      console.log("User:", user); // Log the user
+      // console.log("User:", user); // Log the user
       res.json(user);
     });
   } else {
@@ -60,9 +60,9 @@ app.post("/login", async (req, res) => {
           }
           res
             .cookie("token", token, {
-              httpOnly: true, // Only send cookie over HTTPS in production
+              httpOnly: true,
               secure: true,
-              sameSite: "none", // Adjust as needed: 'lax', 'strict', or 'none'
+              sameSite: "none",
               path: "/",
             })
             .status(200)
