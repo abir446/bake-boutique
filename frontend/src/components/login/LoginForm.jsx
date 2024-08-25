@@ -45,6 +45,7 @@ export const LoginForm = () => {
         Login
       </h2>
       <form onSubmit={loginUser} className="space-y-4">
+        {/* Email */}
         <div>
           <label
             htmlFor="email"
@@ -63,6 +64,8 @@ export const LoginForm = () => {
             required
           />
         </div>
+
+        {/* Password */}
         <div>
           <label
             htmlFor="password"

@@ -15,12 +15,13 @@ export const RegisterForm = () => {
 
   const registerUser = async (e) => {
     e.preventDefault();
-    const { name, email, password } = data;
+    const { name, email, address, password } = data;
 
     try {
       const { data } = await axios.post("http://localhost:8000/register", {
         name,
         email,
+        address,
         password,
       });
       if (data.error) {
@@ -43,7 +44,10 @@ export const RegisterForm = () => {
         </h2>
         <form onSubmit={registerUser} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Name
             </label>
             <input
@@ -57,7 +61,10 @@ export const RegisterForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -71,7 +78,10 @@ export const RegisterForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-700"
+            >
               Address
             </label>
             <input
@@ -85,7 +95,10 @@ export const RegisterForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -109,10 +122,7 @@ export const RegisterForm = () => {
         </form>
         <p className="text-center text-gray-500 text-sm mt-4">
           Already have an account?{" "}
-          <a
-            href="/login"
-            className="text-blue-600 hover:underline"
-          >
+          <a href="/login" className="text-blue-600 hover:underline">
             Log in
           </a>
         </p>

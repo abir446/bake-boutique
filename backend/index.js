@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/profile", (req, res) => {
+app.get("/userInfo", (req, res) => {
   const { token } = req.cookies;
   console.log("Token:", token); // Log the token
   if (token) {
@@ -32,6 +32,23 @@ app.get("/profile", (req, res) => {
     });
   } else {
     res.json(null);
+  }
+});
+
+app.post("/logout", (req, res) => {
+  try {
+    res
+      .cookie("token", "", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        path: "/",
+        expires: new Date(0),
+      })
+      .status(200)
+      .json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.json({ error: "Log out failed" });
   }
 });
 
@@ -80,7 +97,7 @@ app.post("/login", async (req, res) => {
 //Registration Post
 app.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, address, password } = req.body;
     if (!name) {
       return res.json({
         error: "Name is required",
@@ -104,7 +121,12 @@ app.post("/register", async (req, res) => {
 
     const hashed = await hashPassword(password);
 
-    const userCreated = await User.create({ name, email, password: hashed });
+    const userCreated = await User.create({
+      name,
+      email,
+      address,
+      password: hashed,
+    });
     res.status(201).json(userCreated);
   } catch (error) {
     console.log(error);

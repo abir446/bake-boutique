@@ -10,7 +10,7 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     if (!user) {
       axios
-        .get("http://localhost:8000/profile", { withCredentials: true })
+        .get("http://localhost:8000/userInfo", { withCredentials: true })
         .then(({ data }) => {
           setUser(data);
         });
