@@ -1,7 +1,6 @@
-import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export const RegisterForm = () => {
@@ -13,13 +12,6 @@ export const RegisterForm = () => {
   } = useForm();
 
   const navigate = useNavigate();
-
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    address: "",
-    password: "",
-  });
 
   const registerUser = async (data) => {
     const { name, email, address, password } = data;
@@ -34,7 +26,6 @@ export const RegisterForm = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
-        setData({});
         toast.success("Registration Success");
         navigate("/login");
       }
@@ -62,19 +53,9 @@ export const RegisterForm = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="John Doe"
             />
-            {/* errors will return when field validation fails  */}
             {errors.name && (
               <span className="text-red-500">Name is required</span>
             )}
-            {/* <input
-              type="text"
-              id="name"
-              value={data.name}
-              onChange={(e) => setData({ ...data, name: e.target.value })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="John Doe"
-              autoComplete="name"
-            /> */}
           </div>
           <div>
             <label
@@ -94,15 +75,6 @@ export const RegisterForm = () => {
             {errors.email && (
               <span className="text-red-500">This field is required</span>
             )}
-            {/* <input
-              type="email"
-              id="email"
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="john@doe.com"
-              autoComplete="email"
-            /> */}
           </div>
           <div>
             <label
@@ -121,15 +93,6 @@ export const RegisterForm = () => {
             {errors.address && (
               <span className="text-red-500">Address is required</span>
             )}
-            {/* <input
-              type="text"
-              id="address"
-              value={data.address}
-              onChange={(e) => setData({ ...data, address: e.target.value })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Address"
-              autoComplete="address"
-            /> */}
           </div>
           <div>
             <label
@@ -148,15 +111,6 @@ export const RegisterForm = () => {
             {errors.password && (
               <span className="text-red-500">This field is required</span>
             )}
-            {/* <input
-              type="password"
-              id="password"
-              value={data.password}
-              onChange={(e) => setData({ ...data, password: e.target.value })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Password"
-              autoComplete="new-password"
-            /> */}
           </div>
           <div className="flex items-center justify-between">
             <button
@@ -169,9 +123,9 @@ export const RegisterForm = () => {
         </form>
         <p className="text-center text-gray-500 text-sm mt-4">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
+          <Link to={"/login"} className="text-blue-600 hover:underline">
             Log in
-          </a>
+          </Link>
         </p>
       </div>
     </div>

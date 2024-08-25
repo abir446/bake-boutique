@@ -103,6 +103,7 @@ app.post("/login", async (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     const { name, email, address, password } = req.body;
+    console.log(name, email, address, password);
     if (!name) {
       return res.json({
         error: "Name is required",
