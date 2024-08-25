@@ -36,11 +36,11 @@ export const RegisterForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[calc(100vh-60px)] bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
           Create an account
         </h2>
-        <form onSubmit={handleSubmit(registerUser)} className="space-y-4">
+        <form onSubmit={handleSubmit(registerUser)} className="space-y-3">
           <div>
             <label
               htmlFor="name"
@@ -50,7 +50,7 @@ export const RegisterForm = () => {
             </label>
             <input
               {...register("name", { required: true })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="John Doe"
             />
             {errors.name && (
@@ -69,9 +69,8 @@ export const RegisterForm = () => {
               type="email"
               id="email"
               placeholder="john@gmail.com"
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
-            {/* errors will return when field validation fails  */}
             {errors.email && (
               <span className="text-red-500">This field is required</span>
             )}
@@ -86,10 +85,9 @@ export const RegisterForm = () => {
             <input
               type="text"
               {...register("address", { required: true })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Address"
             />
-            {/* errors will return when field validation fails  */}
             {errors.address && (
               <span className="text-red-500">Address is required</span>
             )}
@@ -105,9 +103,8 @@ export const RegisterForm = () => {
               type="password"
               placeholder="Password"
               {...register("password", { required: true })}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
-            {/* errors will return when field validation fails  */}
             {errors.password && (
               <span className="text-red-500">This field is required</span>
             )}
