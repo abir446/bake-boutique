@@ -2,19 +2,26 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 export const RegisterForm = () => {
+  const {
+    register,
+    handleSubmit,
+
+    formState: { errors },
+  } = useForm();
+
   const navigate = useNavigate();
 
   const [data, setData] = useState({
     name: "",
     email: "",
-    password: "",
     address: "",
+    password: "",
   });
 
-  const registerUser = async (e) => {
-    e.preventDefault();
+  const registerUser = async (data) => {
     const { name, email, address, password } = data;
 
     try {
@@ -37,12 +44,12 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-60px)] bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Create an account
         </h2>
-        <form onSubmit={registerUser} className="space-y-4">
+        <form onSubmit={handleSubmit(registerUser)} className="space-y-4">
           <div>
             <label
               htmlFor="name"
@@ -51,6 +58,15 @@ export const RegisterForm = () => {
               Name
             </label>
             <input
+              {...register("name", { required: true })}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="John Doe"
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.name && (
+              <span className="text-red-500">Name is required</span>
+            )}
+            {/* <input
               type="text"
               id="name"
               value={data.name}
@@ -58,7 +74,7 @@ export const RegisterForm = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="John Doe"
               autoComplete="name"
-            />
+            /> */}
           </div>
           <div>
             <label
@@ -68,6 +84,17 @@ export const RegisterForm = () => {
               Email
             </label>
             <input
+              {...register("email", { required: true })}
+              type="email"
+              id="email"
+              placeholder="john@gmail.com"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.email && (
+              <span className="text-red-500">This field is required</span>
+            )}
+            {/* <input
               type="email"
               id="email"
               value={data.email}
@@ -75,7 +102,7 @@ export const RegisterForm = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="john@doe.com"
               autoComplete="email"
-            />
+            /> */}
           </div>
           <div>
             <label
@@ -86,13 +113,23 @@ export const RegisterForm = () => {
             </label>
             <input
               type="text"
+              {...register("address", { required: true })}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Address"
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.address && (
+              <span className="text-red-500">Address is required</span>
+            )}
+            {/* <input
+              type="text"
               id="address"
               value={data.address}
               onChange={(e) => setData({ ...data, address: e.target.value })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Address"
               autoComplete="address"
-            />
+            /> */}
           </div>
           <div>
             <label
@@ -103,13 +140,23 @@ export const RegisterForm = () => {
             </label>
             <input
               type="password"
+              placeholder="Password"
+              {...register("password", { required: true })}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            />
+            {/* errors will return when field validation fails  */}
+            {errors.password && (
+              <span className="text-red-500">This field is required</span>
+            )}
+            {/* <input
+              type="password"
               id="password"
               value={data.password}
               onChange={(e) => setData({ ...data, password: e.target.value })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Password"
               autoComplete="new-password"
-            />
+            /> */}
           </div>
           <div className="flex items-center justify-between">
             <button

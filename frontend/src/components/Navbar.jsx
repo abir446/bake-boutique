@@ -25,7 +25,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-around p-4">
+    <div className="flex justify-around p-4 h-[60px]">
       <Link to={"/"}>Bake boutique</Link>
       <div className="flex gap-2 space-x-9">
         {user ? (

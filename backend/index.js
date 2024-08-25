@@ -10,8 +10,8 @@ const jwt = require("jsonwebtoken");
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
-    credentials: true, // Allow cookies to be sent
+    origin: "http://localhost:5173",
+    credentials: true,
   })
 );
 app.use(express.json());
@@ -68,7 +68,12 @@ app.post("/login", async (req, res) => {
 
     if (match) {
       jwt.sign(
-        { email: user.email, id: user._id, name: user.name },
+        {
+          email: user.email,
+          id: user._id,
+          name: user.name,
+          address: user.address,
+        },
         process.env.JWT_SECRET,
         {},
         (err, token) => {
@@ -133,12 +138,10 @@ app.post("/register", async (req, res) => {
   }
 });
 
-const port = 8000;
-
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   mongoose
     .connect(process.env.DB)
     .then(() => console.log("DB connection established"))
     .catch(() => console.log("Error connecting to Mongo"));
-  console.log(`Port Running on: ${port}`);
+  console.log(`Port Running on: ${process.env.PORT}`);
 });
