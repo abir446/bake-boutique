@@ -1,35 +1,33 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { UserContext } from "../../../context/userContext";
 
 export const LoginForm = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const loginUser = async (e) => {
-    e.preventDefault();
-    const { email, password } = data;
+  const loginUser = async (data) => {
     try {
       const response = await axios.post(
         "http://localhost:8000/login",
         {
-          email,
-          password,
+          email: data.email,
+          password: data.password,
         },
         { withCredentials: true }
       );
       if (response.data.error) {
         toast.error(response.data.error);
       } else {
-        setUser(data.user);
-        setData({});
+        setUser(response.data.user);
         toast.success("Login successful");
         navigate("/");
       }
@@ -44,8 +42,7 @@ export const LoginForm = () => {
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
         Login
       </h2>
-      <form onSubmit={loginUser} className="space-y-4">
-        {/* Email */}
+      <form onSubmit={handleSubmit(loginUser)} className="space-y-4">
         <div>
           <label
             htmlFor="email"
@@ -55,14 +52,23 @@ export const LoginForm = () => {
           </label>
           <input
             type="email"
-            value={data.email}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
             id="email"
             placeholder="john@doe.com"
             autoComplete="email"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Enter a valid email address",
+              },
+            })}
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         {/* Password */}
@@ -75,14 +81,27 @@ export const LoginForm = () => {
           </label>
           <input
             type="password"
-            value={data.password}
-            onChange={(e) => setData({ ...data, password: e.target.value })}
             id="password"
             placeholder="Password"
             autoComplete="current-password"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-            required
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 4 characters",
+              },
+              maxLength:{
+                value:10,
+                message:"Password cannot  exceed more than  10 characters",
+              },
+            })}
           />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
+          )}
         </div>
         <button
           type="submit"
